@@ -1,8 +1,8 @@
 package idv.module.repository;
 
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * * AbstractDao. 2020/3/22 3:59 下午
@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  * * @version 1.0.0
  *
  **/
+@RequiredArgsConstructor
 public class AbstractDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     protected Session getSession() {
         return sessionFactory.getCurrentSession();
