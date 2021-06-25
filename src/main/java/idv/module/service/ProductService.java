@@ -2,7 +2,7 @@ package idv.module.service;
 
 import idv.module.entity.Product;
 import idv.module.repository.ProductDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +19,10 @@ import java.util.List;
 @Service("productService")
 // 表示將這項任務交給 spring 處理，spring會以AOP在方法結束時進行commit，如果有錯，則自動進行roll back。
 @Transactional
+@RequiredArgsConstructor
 public class ProductService {
 
-    private ProductDao productDao;
-
-    @Autowired
-    public ProductService(ProductDao productDao) {
-        this.productDao = productDao;
-    }
+    private final ProductDao productDao;
 
     public void save(Product product) {
         productDao.save(product);
