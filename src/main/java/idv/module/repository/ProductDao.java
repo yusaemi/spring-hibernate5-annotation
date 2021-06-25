@@ -1,6 +1,7 @@
 package idv.module.repository;
 
 import idv.module.entity.Product;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,10 @@ import java.util.List;
 // 是用來给持久層的類別定義一個名字，讓Spring根據名子關連到這個類別。(宣告了ProductDao在Spring容器中叫productDao這個名子)
 @Repository("productDao")
 public class ProductDao extends AbstractDao {
+
+    public ProductDao(SessionFactory sessionFactory) {
+        super(sessionFactory);
+    }
 
     public void save(Product product) {
         persist(product);

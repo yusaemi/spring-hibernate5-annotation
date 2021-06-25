@@ -1,7 +1,7 @@
 package idv.module.config;
 
+import lombok.RequiredArgsConstructor;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +22,7 @@ import java.util.Properties;
  * * @version 1.0.0
  **/
 @Configuration
+@RequiredArgsConstructor
 @EnableTransactionManagement
 @ComponentScan({ "idv.module.config" })
 @PropertySource(value = { "classpath:application.properties" })
@@ -54,8 +55,7 @@ public class HibernateConfig {
      * spring會根據application-{profile}.properties參照相對映的properties
      * 如果除了找不到application.properties、也沒有配置active，就會預設載入application-default.properties
      */
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
     /*
      * sessionFactory建立了一個LocalSessionFactoryBean，與xml相同，
@@ -85,7 +85,6 @@ public class HibernateConfig {
 
     // 自動注入相關的bean(SessionFactory)
     @Bean
-    @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(sessionFactory);
