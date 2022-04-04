@@ -1,12 +1,16 @@
 package idv.module.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -17,11 +21,14 @@ import java.sql.Timestamp;
  * * @version 1.0.0
  *
  **/
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "product")
 public class Product implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
