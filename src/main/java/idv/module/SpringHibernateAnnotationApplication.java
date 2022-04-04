@@ -9,7 +9,6 @@ import org.springframework.context.support.AbstractApplicationContext;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,7 +18,6 @@ import java.util.concurrent.ThreadLocalRandom;
  * *
  * * @author sero
  * * @version 1.0.0
- *
  **/
 public class SpringHibernateAnnotationApplication {
 
@@ -60,13 +58,13 @@ public class SpringHibernateAnnotationApplication {
 
         /* update */
         System.err.println("==============update Test Product==============");
-        System.out.printf("(Before insertProduct) ZhName: %s, Price: %f, EditDate: %s\n", insertProduct.getZhName(), insertProduct.getPrice(), (insertProduct.getEditDate() == null ? "" : sdf.format(insertProduct.getEditDate())));
+        System.out.printf("(Before insertProduct) ZhName: %s, Price: %f, EditDate: %s\n", insertProduct.getZhName(), insertProduct.getPrice(), insertProduct.getEditDate() == null ? "" : sdf.format(insertProduct.getEditDate()));
         insertProduct.setPrice(4990.72);
         insertProduct.setZhName("測試商品更新");
         insertProduct.setEditDate(Timestamp.valueOf(LocalDateTime.now()));
         productService.update(insertProduct);
         Product updateProduct = productService.findById(insertProduct.getId());
-        System.out.printf("(After insertProduct) ZhName: %s, Price: %f, EditDate: %s\n", updateProduct.getZhName(), updateProduct.getPrice(), (updateProduct.getEditDate() == null ? "" : sdf.format(insertProduct.getEditDate())));
+        System.out.printf("(After insertProduct) ZhName: %s, Price: %f, EditDate: %s\n", updateProduct.getZhName(), updateProduct.getPrice(), updateProduct.getEditDate() == null ? "" : sdf.format(insertProduct.getEditDate()));
         Thread.sleep(50);
 
         /* delete */
@@ -76,7 +74,7 @@ public class SpringHibernateAnnotationApplication {
             System.out.printf("(DeleteProduct) Id: %d, EnName: %s, ZhName: %s, Price: %f, ReleaseDate: %s\n", p.getId(), p.getEnName(), p.getZhName(), p.getPrice(), sdf.format(p.getReleaseDate()));
             productService.deleteById(p.getId());
         }
-        System.out.println("(After delete Test Product) end.");
+        System.out.print("(After delete Test Product) end.");
 
         context.close();
 

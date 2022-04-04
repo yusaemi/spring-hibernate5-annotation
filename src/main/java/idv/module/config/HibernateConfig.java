@@ -24,8 +24,8 @@ import java.util.Properties;
 @Configuration
 @RequiredArgsConstructor
 @EnableTransactionManagement
-@ComponentScan({ "idv.module.config" })
-@PropertySource(value = { "classpath:application.properties" })
+@ComponentScan("idv.module.config")
+@PropertySource("classpath:application.properties")
 public class HibernateConfig {
 
     // 原本該配置的xml如hibernate-config.xml
