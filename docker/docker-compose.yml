@@ -3,9 +3,9 @@ services:
 
   mysql8027:
     # container name
-    container_name: mysql_8_0_28
+    container_name: mysql_8_0_31
     # image version
-    image: mysql:8.0.28
+    image: mysql:8.0.31
     ports:
       - 3306:3306
     environment:
