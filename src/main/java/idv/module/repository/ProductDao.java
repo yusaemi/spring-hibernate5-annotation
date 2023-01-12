@@ -78,7 +78,7 @@ public class ProductDao extends AbstractDao {
     }
 
     public void update(Product product) {
-        getSession().update(product);
+        getSession().merge(product);
     }
 
 }
