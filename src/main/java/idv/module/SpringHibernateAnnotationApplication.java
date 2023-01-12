@@ -12,14 +12,18 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * * Application. 2020/3/22 4:26 下午
+ * * SpringHibernateAnnotationApplication. 2020/3/22 4:26 下午
  * *
  * * @author sero
  * * @version 1.0.0
  **/
 public class SpringHibernateAnnotationApplication {
+
+    private static final Logger LOGGER = Logger.getAnonymousLogger();
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -29,52 +33,54 @@ public class SpringHibernateAnnotationApplication {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        String insertProductName = "Test Product";
+
         /* get all Product */
-        System.err.println("==============get all Product==============");
+        LOGGER.info("==============get all Product==============");
         List<Product> products = productService.findAll();
         for (Product p : products) {
-            System.out.printf("(SelectProduct) Id: %d, EnName: %s, ZhName: %s, Price: %f, ReleaseDate: %s\n", p.getId(), p.getEnName(), p.getZhName(), p.getPrice(), sdf.format(p.getReleaseDate()));
+            LOGGER.log(Level.INFO, "(SelectProduct) Id: {0}, EnName: {1}, ZhName: {2}, Price: {3}, ReleaseDate: {4}", new Object[]{p.getId(), p.getEnName(), p.getZhName(), p.getPrice(), sdf.format(p.getReleaseDate())});
         }
         Thread.sleep(50);
 
         /* select random Product */
         int productId = ThreadLocalRandom.current().nextInt(1, products.size() + 1);
-        System.err.printf("==============select %d Product==============\n", productId);
+        LOGGER.log(Level.INFO, "==============select {0} Product==============", productId);
         Product selectProduct = productService.findById(productId);
-        System.out.printf("(SelectProduct) Id: %d, EnName: %s, ZhName: %s, Price: %f, ReleaseDate: %s\n", selectProduct.getId(), selectProduct.getEnName(), selectProduct.getZhName(), selectProduct.getPrice(), sdf.format(selectProduct.getReleaseDate()));
+        LOGGER.log(Level.INFO, "(SelectProduct) Id: {0}, EnName: {1}, ZhName: {2}, Price: {3}, ReleaseDate: {4}", new Object[]{selectProduct.getId(), selectProduct.getEnName(), selectProduct.getZhName(), selectProduct.getPrice(), sdf.format(selectProduct.getReleaseDate())});
         Thread.sleep(50);
 
         /* insert */
-        System.err.println("==============insert Test Product==============");
+        LOGGER.info("==============insert Test Product==============");
         Product insertProduct = new Product();
-        insertProduct.setEnName("Test Product");
+        insertProduct.setEnName(insertProductName);
         insertProduct.setZhName("測試商品");
         insertProduct.setPrice(9999.55);
         insertProduct.setReleaseDate(Timestamp.from(Instant.now()));
         productService.save(insertProduct);
-        insertProduct = productService.findByEnNameLike("Test Product").get(0);
-        System.out.printf("(InsertProduct) Id: %d, EnName: %s, ZhName: %s, Price: %f, ReleaseDate: %s\n", insertProduct.getId(), insertProduct.getEnName(), insertProduct.getZhName(), insertProduct.getPrice(), sdf.format(insertProduct.getReleaseDate()));
+        insertProduct = productService.findByEnNameLike(insertProductName).get(0);
+        LOGGER.log(Level.INFO, "(InsertProduct) Id: {0}, EnName: {1}, ZhName: {2}, Price: {3}, ReleaseDate: {4}", new Object[]{insertProduct.getId(), insertProduct.getEnName(), insertProduct.getZhName(), insertProduct.getPrice(), sdf.format(insertProduct.getReleaseDate())});
         Thread.sleep(50);
 
         /* update */
-        System.err.println("==============update Test Product==============");
-        System.out.printf("(Before insertProduct) ZhName: %s, Price: %f, EditDate: %s\n", insertProduct.getZhName(), insertProduct.getPrice(), insertProduct.getEditDate() == null ? "" : sdf.format(insertProduct.getEditDate()));
+        LOGGER.info("==============update Test Product==============");
+        LOGGER.log(Level.INFO, "(Before insertProduct) ZhName: {0}, Price: {1}, EditDate: {2}", new Object[]{insertProduct.getZhName(), insertProduct.getPrice(), insertProduct.getEditDate() == null ? "" : sdf.format(insertProduct.getEditDate())});
         insertProduct.setPrice(4990.72);
         insertProduct.setZhName("測試商品更新");
         insertProduct.setEditDate(Timestamp.valueOf(LocalDateTime.now()));
         productService.update(insertProduct);
         Product updateProduct = productService.findById(insertProduct.getId());
-        System.out.printf("(After insertProduct) ZhName: %s, Price: %f, EditDate: %s\n", updateProduct.getZhName(), updateProduct.getPrice(), updateProduct.getEditDate() == null ? "" : sdf.format(insertProduct.getEditDate()));
+        LOGGER.log(Level.INFO, "(After insertProduct) ZhName: {0}, Price: {1}, EditDate: {2}", new Object[]{updateProduct.getZhName(), updateProduct.getPrice(), updateProduct.getEditDate() == null ? "" : sdf.format(insertProduct.getEditDate())});
         Thread.sleep(50);
 
         /* delete */
-        System.err.println("==============delete Test Product==============");
-        List<Product> deleteProducts = productService.findByEnNameLike("Test Product");
+        LOGGER.info("==============delete Test Product==============");
+        List<Product> deleteProducts = productService.findByEnNameLike(insertProductName);
         for (Product p : deleteProducts) {
-            System.out.printf("(DeleteProduct) Id: %d, EnName: %s, ZhName: %s, Price: %f, ReleaseDate: %s\n", p.getId(), p.getEnName(), p.getZhName(), p.getPrice(), sdf.format(p.getReleaseDate()));
+            LOGGER.log(Level.INFO, "(DeleteProduct) Id: {0}, EnName: {1}, ZhName: {2}, Price: {3}, ReleaseDate: {4}", new Object[]{p.getId(), p.getEnName(), p.getZhName(), p.getPrice(), sdf.format(p.getReleaseDate())});
             productService.deleteById(p.getId());
         }
-        System.out.print("(After delete Test Product) end.");
+        LOGGER.info("(After delete Test Product) end.");
 
         context.close();
 
