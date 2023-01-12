@@ -1,13 +1,13 @@
 package idv.module.repository;
 
 import idv.module.entity.Product;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -42,7 +42,7 @@ public class ProductDao extends AbstractDao {
     }
 
     public void deleteById(Integer id) {
-        Query query = getSession().createSQLQuery("delete from product where id = :id");
+        Query<Integer> query = getSession().createNativeQuery("delete from product where id = :id", Integer.class);
         query.setParameter("id", id);
         query.executeUpdate();
     }
@@ -78,7 +78,7 @@ public class ProductDao extends AbstractDao {
     }
 
     public void update(Product product) {
-        getSession().update(product);
+        getSession().merge(product);
     }
 
 }
