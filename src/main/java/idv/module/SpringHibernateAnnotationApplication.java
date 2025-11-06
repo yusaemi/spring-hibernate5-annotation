@@ -25,7 +25,7 @@ public class SpringHibernateAnnotationApplication {
 
     private static final Logger LOGGER = Logger.getAnonymousLogger();
 
-    public static void main(String[] args) throws InterruptedException {
+    void main() throws InterruptedException {
 
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
@@ -58,7 +58,7 @@ public class SpringHibernateAnnotationApplication {
         insertProduct.setPrice(9999.55);
         insertProduct.setReleaseDate(Timestamp.from(Instant.now()));
         productService.save(insertProduct);
-        insertProduct = productService.findByEnNameLike(insertProductName).get(0);
+        insertProduct = productService.findByEnNameLike(insertProductName).getFirst();
         LOGGER.log(Level.INFO, "(InsertProduct) Id: {0}, EnName: {1}, ZhName: {2}, Price: {3}, ReleaseDate: {4}", new Object[]{insertProduct.getId(), insertProduct.getEnName(), insertProduct.getZhName(), insertProduct.getPrice(), sdf.format(insertProduct.getReleaseDate())});
         Thread.sleep(50);
 
